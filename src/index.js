@@ -1,6 +1,9 @@
 import Rx from 'rx'
 
-let XMLHttpRequest = require("xhr2").XMLHttpRequest
+let isNode = typeof process !== 'undefined' && process.versions && !!process.versions.node
+if(isNode){
+  let XMLHttpRequest = require("xhr2").XMLHttpRequest  
+}
 
 export function createResponse$(options){
     const defaults = {
@@ -10,7 +13,7 @@ export function createResponse$(options){
         ,responseType:undefined
         ,timeout:undefined
     }
-    options = Object.assign(options,defaults)
+    options = Object.assign({}, defaults, options)
 
     let obs = new Rx.Subject()
 
