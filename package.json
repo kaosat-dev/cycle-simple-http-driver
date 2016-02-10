@@ -2,7 +2,7 @@
   "name": "cycle-simple-http-driver",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": "Mark 'kaosat-dev' Moissette",
   "license": "MIT",
   "dependencies": {
@@ -22,11 +22,16 @@
     "watchify": "^3.6.1"
   },
   "scripts": {
-    "browserify": "browserify src/client  -t babelify -p [ css-modulesify -o dist/client/main.css ] --o dist/client/bundle.js",
+    "browserify": "browserify src/index  -t babelify --o dist/index.js",
     "build": "npm run browserify",
-    "watch": "watchify src/client  -t babelify -p [ css-modulesify -o dist/client/main.css ] --o dist/client/bundle.js -v -d",
+    "compile-lib": "babel -d lib/ src/",
+    "watch": "watchify src/index  -t babelify --o dist/index.js -v -d",
     "mocha": "mocha src --compilers js:babel-core/register",
-    "test": "npm run mocha"
+    "test": "npm run mocha",
+    "release": "npm run release-patch",
+    "release-patch": "git checkout master ; npm version patch && git push origin master --tags ",
+    "release-minor": "git checkout master ; npm version patch && git push origin master --tags ",
+    "release-major": "git checkout master ; npm version patch && git push origin master --tags "
   },
   "browserify-shim": {
     "rx": "global:Rx"
