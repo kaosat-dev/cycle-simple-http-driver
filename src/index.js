@@ -2,7 +2,7 @@ import Rx from 'rx'
 
 let isNode = typeof process !== 'undefined' && process.versions && !!process.versions.node
 if(isNode){
-  let XMLHttpRequest = require("xhr2").XMLHttpRequest  
+  const XMLHttpRequest = require("xhr2").XMLHttpRequest  
 }
 
 export function createResponse$(options){
@@ -12,6 +12,7 @@ export function createResponse$(options){
         ,mimeType:'text/plain; charset=x-user-defined'
         ,responseType:undefined
         ,timeout:undefined
+        ,send:undefined
     }
     options = Object.assign({}, defaults, options)
 
@@ -56,7 +57,6 @@ export function createResponse$(options){
     request.addEventListener("timeout" , handleTimeout)
 
 
-
     request.open(options.method,options.url, true)
     if ((options.mimeType !== null) && (request.overrideMimeType !== null)) {
         request.overrideMimeType(options.mimeType)
@@ -64,7 +64,7 @@ export function createResponse$(options){
     request.timeout      = options.timeout
     request.responseType = options.responseType
 
-    request.send()
+    request.send(options.send)
 
     return obs
 }
@@ -87,5 +87,4 @@ export default function makeHttpDriver({eager = false} = {eager: false}){
         response$$.connect()
         return response$$
     }
-
 }
