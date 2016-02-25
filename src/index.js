@@ -2,7 +2,7 @@ import Rx from 'rx'
 
 let isNode = typeof process !== 'undefined' && process.versions && !!process.versions.node
 if(isNode){
-  const XMLHttpRequest = require("xhr2").XMLHttpRequest  
+  const XMLHttpRequest = require("xhr2").XMLHttpRequest
 }
 
 export function createResponse$(options){
@@ -30,9 +30,16 @@ export function createResponse$(options){
   function handleComplete(e){
     let response = request.response || request.responseText
 
-    response = options.responseType === 'json' ? JSON.parse(response) : response
-    obs.onNext({response})
-    obs.onCompleted()
+    const status = parseInt((request.status + '').charAt(0))
+    const statusWhiteList = [1,2]//valid http status codes are 1XX or 2XX , nothing else
+    if(statusWhiteList.indexOf(status)===-1){
+      obs.onError(e)
+    }else{
+      //response = options.responseType === 'json' ? JSON.parse(response) : response
+      obs.onNext({response})
+      obs.onCompleted()
+    }
+
   }
 
   function handleError(e){
