@@ -10,7 +10,7 @@ export function createResponse$(options){
     method:'get'
     ,encoding:'utf8'
     ,mimeType:'text/plain; charset=x-user-defined'
-    ,responseType:undefined
+    ,responseType:''
     ,timeout:undefined
     ,send:undefined
   }
@@ -28,7 +28,10 @@ export function createResponse$(options){
       })
   }
   function handleComplete(e){
-    let response = request.response || request.responseText
+    let response = request.response
+    if(request.responseType === ''  || (request.responseType === 'text' && response === null || response === undefined)){
+      response = request.responseText
+    }
 
     const status = parseInt((request.status + '').charAt(0))
     const statusWhiteList = [1,2]//valid http status codes are 1XX or 2XX , nothing else
