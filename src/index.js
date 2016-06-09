@@ -13,7 +13,7 @@ export function createResponse$ (options) {
     responseType: '',
     timeout: undefined,
     send: undefined,
-    withCredentials: true
+    withCredentials: false
   }
   options = Object.assign({}, defaults, options)
 
